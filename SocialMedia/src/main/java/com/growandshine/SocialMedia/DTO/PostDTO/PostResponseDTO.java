@@ -1,0 +1,22 @@
+package com.growandshine.SocialMedia.DTO.PostDTO;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class PostResponseDTO {
+
+    private String postId;
+
+    private String title;
+
+    private String description;
+
+    private long likes;
+}
