@@ -7,11 +7,17 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class QuestionRequest {
 
     private String question;
+
+    private String category;
+
+    private String topic;
+
+    private String correctAnswer;
 
     private String optionA;
 
@@ -21,9 +27,5 @@ public class QuestionRequest {
 
     private String optionD;
 
-    private String difficultyLevel;
-
-    private String topic;
-
-    private String correctAnswer;
+    private String difficultLevel;
 }

@@ -1,26 +1,18 @@
 package com.growandshine.QuizApplication.DTO;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class QuizResponse {
 
-    private Long id;
+    private Long quizId;
 
-    private String question;
+    private String quizName;
 
-    private String optionA;
-
-    private String optionB;
-
-    private String optionC;
-
-    private String optionD;
+    private List<QuestionResponse> questionResponse;
 
 }

@@ -1,7 +1,10 @@
 package com.growandshine.QuizApplication.Repository;
 
-import com.growandshine.QuizApplication.Entites.Quizz;
+import com.growandshine.QuizApplication.Entites.Quiz;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface QuizRepository extends JpaRepository<Quizz,Long> {
+@Repository
+public interface QuizRepository extends JpaRepository<Quiz,Long> {
+
 }

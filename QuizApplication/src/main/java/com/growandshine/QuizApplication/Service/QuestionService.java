@@ -1,123 +1,50 @@
 package com.growandshine.QuizApplication.Service;
 
 import com.growandshine.QuizApplication.DTO.QuestionRequest;
-import com.growandshine.QuizApplication.DTO.QuestionResponse;
-import com.growandshine.QuizApplication.Entites.Question;
-import com.growandshine.QuizApplication.Repository.QuestionsRepository;
+import com.growandshine.QuizApplication.Entites.Questions;
+import com.growandshine.QuizApplication.Repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class QuestionService {
+
     @Autowired
-    private QuestionsRepository questionsRepository;
+    private QuestionRepository questionRepository;
 
-    public List<QuestionResponse> getAllQuestions() {
+    public ResponseEntity<List<Questions>> getAllQuestions() {
 
-        List<Question> allQuestions = questionsRepository.findAll();
+        List<Questions> getAllQuestions = questionRepository.findAll();
 
-        return allQuestions.stream().map(question ->
-                QuestionResponse.builder()
-                        .id(question.getId())
-                        .question(question.getQuestion())
-                        .optionA(question.getOptionA())
-                        .optionB(question.getOptionB())
-                        .optionC(question.getOptionC())
-                        .optionD(question.getOptionD())
-                        .difficultyLevel(question.getDifficultyLevel())
-                        .topic(question.getTopic())
-                        .build()
-                )
-                .toList();
-
+        return new ResponseEntity<>(getAllQuestions, HttpStatus.OK);
     }
 
-    public List<QuestionResponse> fetchBasedUponCategory(String category) {
+    public ResponseEntity<List<Questions>> fetchByCategory(String category) {
 
-        List<Question> allQuestions = questionsRepository.findByTopic(category).orElse(null);
+        List<Questions> getQuestions = questionRepository.findByCategory(category);
 
-        return allQuestions.stream().map(question ->
-                        QuestionResponse.builder()
-                                .id(question.getId())
-                                .question(question.getQuestion())
-                                .optionA(question.getOptionA())
-                                .optionB(question.getOptionB())
-                                .optionC(question.getOptionC())
-                                .optionD(question.getOptionD())
-                                .difficultyLevel(question.getDifficultyLevel())
-                                .topic(question.getTopic())
-                                .build()
-                )
-                .toList();
+        return new ResponseEntity<>(getQuestions,HttpStatus.OK);
     }
 
-    public String addQuestion(QuestionRequest questionRequest) {
+    public ResponseEntity<String> addQuestion(QuestionRequest questionRequest) {
 
-        Question q = Question.builder()
-                .question(questionRequest.getQuestion())
-                .optionA(questionRequest.getOptionA())
-                .optionB(questionRequest.getOptionB())
-                .optionC(questionRequest.getOptionC())
-                .optionD(questionRequest.getOptionD())
-                .topic(questionRequest.getTopic())
-                .difficultyLevel(questionRequest.getDifficultyLevel())
-                .correctAnswer(questionRequest.getCorrectAnswer())
-                .build();
+        Questions question = new Questions();
+        question.setQuestion(questionRequest.getQuestion());
+        question.setCategory(questionRequest.getCategory());
+        question.setTopic(questionRequest.getTopic());
+        question.setCorrectAnswer(questionRequest.getCorrectAnswer());
+        question.setOptionA(questionRequest.getOptionA());
+        question.setOptionB(questionRequest.getOptionB());
+        question.setOptionC(questionRequest.getOptionC());
+        question.setOptionD(questionRequest.getOptionD());
+        question.setDifficultLevel(questionRequest.getDifficultLevel());
 
-        questionsRepository.save(q);
-        return ("Question added !");
-    }
+        questionRepository.save(question);
 
-    public String updateQuestion(QuestionRequest questionRequest, Long id) {
-        Question question = questionsRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Question not found with ID: " + id));
-
-        if (questionRequest.getQuestion() != null && !questionRequest.getQuestion().isBlank()) {
-            question.setQuestion(questionRequest.getQuestion());
-        }
-
-        if (questionRequest.getCorrectAnswer() != null && !questionRequest.getCorrectAnswer().isBlank()) {
-            question.setCorrectAnswer(questionRequest.getCorrectAnswer());
-        }
-
-        if (questionRequest.getOptionA() != null && !questionRequest.getOptionA().isBlank()) {
-            question.setOptionA(questionRequest.getOptionA());
-        }
-
-        if (questionRequest.getOptionB() != null && !questionRequest.getOptionB().isBlank()) {
-            question.setOptionB(questionRequest.getOptionB());
-        }
-
-        if (questionRequest.getOptionC() != null && !questionRequest.getOptionC().isBlank()) {
-            question.setOptionC(questionRequest.getOptionC());
-        }
-
-        if (questionRequest.getOptionD() != null && !questionRequest.getOptionD().isBlank()) {
-            question.setOptionD(questionRequest.getOptionD());
-        }
-
-        if (questionRequest.getTopic() != null && !questionRequest.getTopic().isBlank()) {
-            question.setTopic(questionRequest.getTopic());
-        }
-
-        if (questionRequest.getDifficultyLevel() != null && !questionRequest.getDifficultyLevel().isBlank()) {
-            question.setDifficultyLevel(questionRequest.getDifficultyLevel());
-        }
-
-        questionsRepository.save(question);
-
-        return "Question updated";
-    }
-
-    public String deleteQuestion(long id) {
-
-        Question q = questionsRepository.findById(id).orElse(null);
-
-        questionsRepository.deleteById(id);
-
-        return "Deleted";
+        return new ResponseEntity<>("Question added",HttpStatus.CREATED);
     }
 }

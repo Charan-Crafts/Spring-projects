@@ -9,16 +9,22 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Question {
+@ToString
+public class Questions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     private String question;
+
+    private String category;
+
+    private String topic;
+
+    private String correctAnswer;
 
     private String optionA;
 
@@ -28,9 +34,8 @@ public class Question {
 
     private String optionD;
 
-    private String difficultyLevel;
+    private String difficultLevel;
 
-    private String topic;
 
-    private String correctAnswer;
+
 }

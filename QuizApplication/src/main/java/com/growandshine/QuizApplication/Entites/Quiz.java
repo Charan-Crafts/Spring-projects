@@ -1,25 +1,24 @@
 package com.growandshine.QuizApplication.Entites;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Quizz {
+
+public class Quiz {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long quizId;
+    private long quizId;
 
     private String quizName;
 
     @ManyToMany
-    private List<Question> questions=new ArrayList<>();
+    private List<Questions> questionsList;
+
 }
