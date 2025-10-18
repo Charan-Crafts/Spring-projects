@@ -11,5 +11,5 @@ public interface QuestionRepository extends JpaRepository<Questions,Long> {
     List<Questions> findByCategory(String category);
 
     @Query(value = "SELECT Q.id FROM QUESTIONS Q WHERE Q.CATEGORY=:category ORDER BY RAND() LIMIT :numQuestions",nativeQuery = true)
-    List<Integer> randomQuestions(String category, Long numQuestions);
+    List<Long> randomQuestions(String category, Long numQuestions);
 }

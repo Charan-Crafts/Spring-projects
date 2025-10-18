@@ -7,6 +7,7 @@ import com.growandshine.Question_Service.DTO.QuestionResponse;
 import com.growandshine.Question_Service.Entites.Questions;
 import com.growandshine.Question_Service.Repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ public class QuestionService {
 
     @Autowired
     private QuestionRepository questionRepository;
+
+    @Autowired
+    Environment environment;
 
     public ResponseEntity<List<Questions>> getAllQuestions() {
 
@@ -52,9 +56,9 @@ public class QuestionService {
         return new ResponseEntity<>("Question added",HttpStatus.CREATED);
     }
 
-    public ResponseEntity<List<Integer>> generateQuestionsForQuiz(String category, long numberOfquestions) {
+    public ResponseEntity<List<Long>> generateQuestionsForQuiz(String category, long numberOfquestions) {
 
-        List<Integer> questionIds = questionRepository.randomQuestions(category,numberOfquestions);
+        List<Long> questionIds = questionRepository.randomQuestions(category,numberOfquestions);
 
         return new ResponseEntity<>(questionIds,HttpStatus.OK);
     }
@@ -94,6 +98,8 @@ public class QuestionService {
                 score++;
             }
         }
+
+        System.out.println(environment.getProperty("local.server.port"));
 
         return new ResponseEntity<>(score,HttpStatus.OK);
     }
